@@ -103,6 +103,11 @@ public class NoteAPI {
             assert response.body() != null;
             var body = response.body().string();
 
+            if (body.equals("{\"detail\":\"Note not found.\"}")) {
+                Log.i("EMPTY", "no note in server");
+                return null;
+            }
+
             bodyLines = body.split("[,]", 0);
             newTitle = bodyLines[0];
             newMessage = bodyLines[1];
@@ -142,7 +147,6 @@ public class NoteAPI {
                 .build();
 
         try (var response = client.newCall(request).execute()) {
-            System.out.println("yo we made it this far");
             return;
         } catch (Exception e) {
             e.printStackTrace();
