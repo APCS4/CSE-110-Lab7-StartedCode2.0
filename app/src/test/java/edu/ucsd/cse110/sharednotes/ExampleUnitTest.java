@@ -30,7 +30,7 @@ public class ExampleUnitTest {
     @Test
     public void testNoteAPIPut() {
         NoteAPI noteAPI = new NoteAPI();
-        Note note = new Note("Josh note to test put", "this better work", 0);
+        Note note = new Note("woah", "woah woah woah woah", 1);
 
         noteAPI.putNote(note);
 

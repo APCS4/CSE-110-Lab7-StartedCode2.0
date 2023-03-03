@@ -130,7 +130,9 @@ public class NoteAPI {
 
     @WorkerThread
     public void putNote(Note note) {
-        RequestBody requestBody = RequestBody.create("{\"content\":\"" + note.content + "\",\"version\":" + note.version + "}", MediaType.get("application/json"));
+        String bodyString = "{\"content\":\"" + note.content + "\",\"version\":" + note.version + "}";
+        MediaType JSON = MediaType.get("application/json; charset=utf-8");
+        RequestBody requestBody = RequestBody.create(bodyString, JSON);
         String title = note.title;
         String encodedTitle = title.replace(" ", "%20");
 
