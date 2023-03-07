@@ -7,7 +7,9 @@ import androidx.lifecycle.Observer;
 
 import java.time.Instant;
 import java.util.List;
+import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
@@ -59,6 +61,7 @@ public class NoteRepository {
     }
 
     public void upsertSynced(Note note) {
+        note.version = note.version + 1;
         upsertLocal(note);
         upsertRemote(note);
     }
@@ -75,7 +78,7 @@ public class NoteRepository {
     }
 
     public void upsertLocal(Note note) {
-        note.version = note.version + 1;
+        // note.version = note.version + 1;
         dao.upsert(note);
     }
 
@@ -131,13 +134,13 @@ public class NoteRepository {
 
     public void upsertRemote(Note note) {
         // TODO: Implement upsertRemote!
+        ExecutorService backgroundThreadExecutor = Executors.newSingleThreadExecutor();
+        Future<?> future;
 
         NoteAPI noteAPI = new NoteAPI();
 
-        note.version = note.version + 1;
-
-        noteAPI.putNote(note);
-
-        // throw new UnsupportedOperationException("Not implemented yet");
+        future = backgroundThreadExecutor.submit(() -> {
+            noteAPI.putNote(note);
+        });
     }
 }
